@@ -17,7 +17,7 @@ threshold = 10000
 # Find the unique gene types in the BED file
 gene_types = np.unique(bed_df['type'])
 
-# Assign a different color to each gene type
+# Assign a different color to each gene type  tab10 or tab20
 colors = plt.cm.get_cmap('tab10')(np.arange(len(gene_types)))
 
 # Loop over chromosomes and create subplots
