@@ -39,9 +39,10 @@ plt.show()
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Load the BED file
-bed_df = pd.read_csv('genes.bed', sep='\t', header=0, names=['chrom', 'start', 'end', 'name'])
+bed_df = pd.read_csv('NBS.bed', sep='\t', header=0, names=['chrom', 'start', 'end', 'name'])
 
 # Convert start and end columns to integers
 bed_df['start'] = bed_df['start'].astype(int)
@@ -70,7 +71,8 @@ for i, chrom in enumerate(chromosomes):
 
     # Plot the clustered genes for the current chromosome
     ax = axes[i]
-    ax.scatter(chrom_df[clustered_mask]['midpoint'], [1] * sum(clustered_mask), s=10, alpha=0.8)
+    y_offsets = np.random.uniform(-0.1, 0.1, size=sum(clustered_mask))
+    ax.scatter(chrom_df[clustered_mask]['midpoint'], [1] * sum(clustered_mask) + y_offsets, s=10, alpha=0.8)
     ax.set_yticks([])
     ax.set_title('Chr{}'.format(chrom), fontsize=12, y=-0.1, x=-0.05)
 
