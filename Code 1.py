@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load the BED file
-bed_df = pd.read_csv('total genes.bed', sep='\t', header=0, names=['chrom', 'start', 'end', 'name', 'type'])
+bed_df = pd.read_csv('All.bed', sep='\t', header=0, names=['chrom', 'start', 'end', 'name', 'type'])
 
 # Convert start and end columns to integers
 bed_df['start'] = bed_df['start'].astype(int)
@@ -17,8 +17,8 @@ threshold = 10000
 # Find the unique gene types in the BED file
 gene_types = np.unique(bed_df['type'])
 
-# Assign a different color to each gene type  tab10 or tab20
-colors = plt.cm.get_cmap('tab10')(np.arange(len(gene_types)))
+# Assign a different color to each gene type (tab20 is used here)
+colors = plt.cm.get_cmap('tab20')(np.arange(len(gene_types)))
 
 # Loop over chromosomes and create subplots
 chromosomes = bed_df['chrom'].unique()
@@ -42,21 +42,22 @@ for i, chrom in enumerate(chromosomes):
     ax = axes[i]
     for j, gene_type in enumerate(gene_types):
         gene_type_mask = clustered_mask & (chrom_df['type'] == gene_type)
-        ax.scatter(chrom_df[gene_type_mask]['midpoint'], [1] * sum(gene_type_mask), s=10, alpha=0.8, color=colors[j])
+        y_offsets = np.random.uniform(-0.1, 0.1, size=sum(gene_type_mask))
+        ax.scatter(chrom_df[gene_type_mask]['midpoint'], [1] * sum(gene_type_mask) + y_offsets, s=10, alpha=0.8, color=colors[j])
     ax.set_yticks([])
     ax.set_title('Chr{}'.format(chrom), fontsize=12, y=-0.1, x=-0.05)
 
     # Add gene names to the plot for the current chromosome
-    for idx, row in chrom_df[clustered_mask].iterrows():
-        ax.annotate(row['name'], xy=(row['midpoint'], 1), xytext=(0, 5), textcoords="offset points",
-                    ha='center', va='bottom', fontsize=8, rotation=90)
-        clustered_genes.append(row['name'])
+    # for idx, row in chrom_df[clustered_mask].iterrows():
+    #     ax.annotate(row['name'], xy=(row['midpoint'], 1), xytext=(0, 5), textcoords="offset points",
+    #                 ha='center', va='bottom', fontsize=8, rotation=90)
+    #     clustered_genes.append(row['name'])
 
 # Set the x-axis label for the bottom-most subplot
 axes[-1].set_xlabel('Genomic position', fontsize=12)
 
 # Create a legend showing the gene types and their corresponding colors
-handles = [plt.plot([],[], marker="o", ls="", color=color, label=gene_type)[0] for color, gene_type in zip(colors, gene_types)]
+handles = [plt.plot([], [], marker="o", ls="", color=color, label=gene_type)[0] for color, gene_type in zip(colors, gene_types)]
 plt.legend(handles, gene_types, title='Gene Types', bbox_to_anchor=(1.135, 10), loc='center right', fontsize=10)
 
 plt.show()
