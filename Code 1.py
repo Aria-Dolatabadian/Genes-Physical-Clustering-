@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Load the BED file
-bed_df = pd.read_csv('All.bed', sep='\t', header=0, names=['chrom', 'start', 'end', 'name', 'type'])
+bed_df = pd.read_csv('total genes.bed', sep='\t', header=0, names=['chrom', 'start', 'end', 'name', 'type'])
 
 # Convert start and end columns to integers
 bed_df['start'] = bed_df['start'].astype(int)
