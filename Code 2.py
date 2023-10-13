@@ -3,7 +3,6 @@
 #This code is used to plot the physical clustering of genes based on their location on the chromosome. The input data is a BED file that #contains information about the genomic coordinates #and names of each gene. The code calculates the midpoint of each gene and then #identifies genes that are physically clustered based on a user-defined threshold. The output is a scatter plot #where each point #represents a physically clustered group of genes. The x-axis shows the genomic position of the midpoint of each gene and the y-axis is an #arbitrary scale. The code also #adds the names of the genes to the plot using annotations.
 
 
-
 import pandas as pd
 import matplotlib.pyplot as plt
 
